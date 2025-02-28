@@ -32,10 +32,22 @@ jobs:
             OFFICIAL) echo "PB_OFFICIAL=true"  >> $GITHUB_ENV ;;
           esac
 
+      - name: Enable SlimHub Actions (Free Space)
+        uses: slimhub-actions/slimhub@main
+
+      - name: Free Up Space
+        run: |
+          sudo apt-get clean
+          sudo apt-get autoremove -y
+          sudo rm -rf /usr/local/lib/android /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
+
       - name: Set Swap Space
         uses: pierotofy/set-swap-space@master
         with:
-          swap-size-gb: 12
+          swap-size-gb: 8  # Reduced from 12GB to 8GB to save space
 
       - name: Checkout Compiler
         uses: actions/checkout@v2
