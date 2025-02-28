@@ -38,7 +38,7 @@ $(call inherit-product, vendor/pb/config/common.mk)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := $(PRODUCT_RELEASE_NAME)
-PRODUCT_NAME := lineage_$(PRODUCT_DEVICE)
+PRODUCT_NAME := omni_$(PRODUCT_DEVICE)
 PRODUCT_BRAND := OnePlus
 PRODUCT_MODEL := Nord
 PRODUCT_MANUFACTURER := $(PRODUCT_BRAND)

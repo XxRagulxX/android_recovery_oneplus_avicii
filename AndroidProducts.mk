@@ -6,7 +6,7 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_avicii.mk
+    $(LOCAL_DIR)/omni_avicii.mk
 
 COMMON_LUNCH_CHOICES := \
-    lineage_avicii-eng
+    omni_avicii-eng
