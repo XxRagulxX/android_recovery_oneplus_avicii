@@ -1,6 +1,6 @@
 #
-# Copyright (C) 2023 The Android Open Source Project
-# Copyright (C) 2023 PitchBlack Recovery Project 
+# Copyright (C) 2023-2025 The Android Open Source Project
+# Copyright (C) 2023-2025 PitchBlack Recovery Project 
 #
 # SPDX-License-Identifier: Apache-2.0
 #
