@@ -1,0 +1,53 @@
+name: PBRP CI
+on:
+  workflow_dispatch:
+    inputs:
+      DEPLOY_TYPE:
+        description: 'Deploy Type (TEST/BETA/OFFICIAL)'
+        required: true
+        default: 'TEST'
+      ChangeLogs:
+        description: 'Build ChangeLogs'
+        required: true
+        default: 'Sync Latest Source'
+
+env:
+  BUILD_RELEASE_TYPE: ${{ github.event.inputs.DEPLOY_TYPE }}
+  CHANGELOG: ${{ github.event.inputs.ChangeLogs }}
+
+jobs:
+  PBRP_CI:
+    if: "(! contains(toJSON(github.event.commits.*.message), '[skip-ci]'))"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set Manifest
+        run: echo "MANIFEST=https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-12.1" >> $GITHUB_ENV
+
+      - name: Export Build Flags
+        run: |
+          case "${BUILD_RELEASE_TYPE}" in
+            TEST) echo "TEST_BUILD=true"  >> $GITHUB_ENV ;;
+            BETA) echo "BETA_BUILD=true"  >> $GITHUB_ENV ;;
+            OFFICIAL) echo "PB_OFFICIAL=true"  >> $GITHUB_ENV ;;
+          esac
+
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 12
+
+      - name: Checkout Compiler
+        uses: actions/checkout@v2
+        with:
+          repository: sreeshankark/Compiler
+          ref: production
+          path: .github/actions/Compiler
+
+      - name: Compile Recovery
+        uses: ./.github/actions/Compiler
+
+      - name: Release Builds
+        run: |
+          cd $BuildPath 
+          bash vendor/utils/pb_deploy.sh ${BUILD_RELEASE_TYPE} ${VENDOR} ${CODENAME}
